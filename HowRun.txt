@@ -1,0 +1,12 @@
+
+
+1. Ввійти в віртуальне оточення командою source myenv/bin/activate або python myenv/bin/activate
+2. Запустити файл CreateDB.py командою python CreateDB.py або python3 CreateDB.py . Чекати до закінчення роботи файлу
+3. Запустити файл (Калькулятор) CalcCalories/CalculateCalories.py командою python CalcCalories/CalculateCalories.py 
+або python3 CalcCalories/CalculateCalories.py
+
+tools.py --- Інструменти для парсингу
+sqltools.py --- Інструменти для роботи з базою
+CreateDB.py --- Створює базу
+ToolsCalculateCalories.py --- Інструменти для калькулятора 
+CalculateCalories.py --- Калькулятор
