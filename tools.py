@@ -1,4 +1,4 @@
-import requests
+import requests  # type: ignore
 import sqltools
 import math
 from bs4 import BeautifulSoup # type: ignore
