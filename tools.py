@@ -49,7 +49,7 @@ def FindUrl(data):
     all_url = src.find_all("a", class_="mzr-tc-group-item-href")
 
     for url in all_url:
-        all_urls[url.text] = f"{main_url}{url.get("href")}"
+        all_urls[url.text] = f"{main_url}{url.get('href')}"
 
 
 #Виводить всі url адреса з назвами на яку групу продуктів вони йдуть

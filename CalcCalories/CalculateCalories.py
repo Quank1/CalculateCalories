@@ -1,7 +1,9 @@
 import ToolsCalculateCalories as tcc
 import sys, os
 
-sys.path.append(os.path.abspath('../LessonScraping'))
+
+
+sys.path.append(os.path.abspath('../CaloriesCalc'))
 
 import sqltools
 
