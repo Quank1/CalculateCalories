@@ -1,10 +1,10 @@
 from itertools import count
-import sys
-import os
+import sys, os
 
 sys.path.append(os.path.abspath('../CaloriesCalc'))
 
 import sqltools
+import tools
 
 con = 0
 
@@ -101,7 +101,10 @@ def AskWeight(ListInfoPrducts):
         for product in products:
             name = product[1]
             cal = product[2]
-            Weight = AskWeights(name)
+            Weight = AskWeights(name.replace("_", " "))
+
+            AskFuncSerchRecipe(name)
+
 
         calories = calories + ( (int(round(cal)) * Weight) / 100 )
 
@@ -111,4 +114,62 @@ def AskWeight(ListInfoPrducts):
 
 
 def GetCalories(calories):
-    print(f"Калорій - {calories}")
+    print(f"Калорій блюда якого ви вибирали спочатку - {calories}")
+
+
+
+def AskNumRecipe():
+    n = int(input("Введіть номер рецепту: "))
+    return n
+
+
+
+
+def SearchRecipe(id, result):
+    for recipe in result:
+        if recipe[0] == id:
+            return recipe[2]
+
+
+
+def AskRecipe():
+    i = input("Подивитись чи є в нас рецепти цого блюда?[Т/н]: ")
+    return i
+
+
+def PrintIngridient(IngridientsList):
+    count = 0
+    for ingridient in IngridientsList:
+        print(f"{count}. {ingridient}")
+        count += 1
+    
+
+def PrintCaloriesRecipe(ListCalories):
+    print(f"В цьому рецепті приблизно на 100г. {ListCalories[0] }ккал. а також: \n\tБілків {ListCalories[1]}\n\tЖирів {ListCalories[2]}\n\tВуглеводів {ListCalories[3]}\n")
+
+
+def AskFuncSerchRecipe(name):
+    YorN2 = AskRecipe()
+    results = sqltools.SearchRecipe(name)
+
+    ingridients = []
+    if results:
+        if YorN2 == "т" or YorN2 == "Т":
+            for resipe in results:
+                print(f"№{resipe[0]}, імя: {resipe[1]}")
+
+            num = AskNumRecipe()
+            for resipe in results:
+                if num == resipe[0]:
+                    Ingridient, CaloriesList = tools.SearchRecipeINWeb(resipe[2])
+                    PrintIngridient(Ingridient)
+                    PrintCaloriesRecipe(CaloriesList)
+                    
+        else:
+            print("q")
+        
+
+
+         
+    
+

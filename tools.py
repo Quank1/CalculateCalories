@@ -1,13 +1,14 @@
 import requests  # type: ignore
 import sqltools
 import math
+import re
+
 from bs4 import BeautifulSoup # type: ignore
 
 
 
 headers = {
-    "Accept": "*/*",
-    "User-Agent": "Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1"
+    "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 }
 
 main_url = "https://health-diet.ru"
@@ -136,3 +137,38 @@ def AllWorkInSecondPage():
 #Записує все AllProducts.db
 def WriteInDB():
     sqltools.CreateDB(all_products)
+
+def OnlyNUm(s):
+    return re.sub(r'\D', "", s)
+
+def SearchRecipeINWeb(link):
+    soup = BeautifulSoup(requests.get(link, headers=headers).text, "lxml")
+    qq = []
+    ListCalories = []
+    ingridients = soup.find("div", class_="ingredients-bl")
+    ingridients = ingridients.find("ul") # type: ignore 
+    ingridients = ingridients.find_all("li")  # type: ignore
+    for ingridient in ingridients:
+        ingridient = ingridient.text
+        ingridient = ingridient.replace("\n", "")
+        ingridient = ingridient.replace("    ", "")
+        qq.append(ingridient)
+
+
+    Calories = soup.find("div", id="nae-value-bl")
+    table = Calories.find("table") # type: ignore
+    TrFind = table.find_all("tr") # type: ignore
+    TdFind = TrFind[-1].find_all("td")
+    for el in TdFind:
+        ListCalories.append(el.text)
+
+    ListCalories = [OnlyNUm(s) for s in ListCalories]
+
+    print(ListCalories)
+
+
+    return qq, ListCalories
+
+
+
+
